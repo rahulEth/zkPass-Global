@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+// import useEffect from "react";
+// import AnalogWatch from "./components/AnalogWatch";
+// import Todo from "./components/Todo";
+// import Accordian from "./components/Accordian";
+import LandingPage from "./components/landingpage/LandingPage";
+import SaveCredentialsPage from "./components/landingpage/SaveCredentialsPage";
+import GetCredentialsPage from "./components/landingpage/GetCredentialsPage";
+import Header from "./components/header/Header";
 
 function App() {
+  // useEffect(() => {
+  //   const res = fetch("https://v2.jokeapi.dev/joke/Programming").then(
+  //     (response) => {
+  //       return response.json();
+  //     }
+  //   );
+  // }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div className="App">
+        {/* <AnalogWatch /> */}
+        {/* <Accordian />*/}
+        <Header />
+        <LandingPage />
+        <SaveCredentialsPage />
+        <GetCredentialsPage />
+      </div>
+    </>
   );
 }
 
