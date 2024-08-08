@@ -1,6 +1,8 @@
 import React from "react";
 
 const SaveCredentialsPage = () => {
+  const handlClick = (e) => {};
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg max-w-6xl mx-auto">
       {/* <h1 className="w-full p-4 bg-white shadow"> */}
@@ -23,7 +25,10 @@ const SaveCredentialsPage = () => {
             placeholder="Password"
             className="px-4 py-2 mb2 border rounded"
           />
-          <button className="px-4 py- text-white bg-blue-500 rounded">
+          <button
+            onClick={handlClick}
+            className="px-4 py- text-white bg-blue-500 rounded"
+          >
             Submit
           </button>
         </div>

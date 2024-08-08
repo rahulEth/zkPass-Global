@@ -1,6 +1,7 @@
 import React from "react";
 
 const GetCredentialsPage = () => {
+  const handlClick = (e) => {};
   return (
     <div className="flex flex-col items-center justify-center min-h-screen   max-w-6xl mx-auto">
       {/* <header className="flex justify-between w-full p-4 bg-white shadow">
@@ -16,7 +17,10 @@ const GetCredentialsPage = () => {
             placeholder="Enter the website name you are looking for "
             className="px-4 py-2 mb-4 border rounded  w-full"
           />
-          <button className="px-4 py-2 mb-4 text-white bg-blue-500 rounded">
+          <button
+            onClick={handlClick}
+            className="px-4 py-2 mb-4 text-white bg-blue-500 rounded"
+          >
             Submit
           </button>
         </div>
