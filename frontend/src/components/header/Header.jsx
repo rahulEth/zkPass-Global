@@ -39,36 +39,8 @@ const Header = () => {
           />
           <span className="font-bold text-lg">Logo</span>
         </div>
-        <input
-          type="text"
-          placeholder="Search for collections, NFTs or users"
-          className="px-4 py-2 border border-gray-300 rounded-full w-64 focus:outline-none focus:ring-2 focus:ring-yellow-400"
-        />
       </div>
       <div className="flex items-center space-x-4">
-        <nav className="flex space-x-4">
-          <a href="/" className="text-gray-600 hover:text-black">
-            Create
-          </a>
-          <a href="/" className="text-gray-600 hover:text-black">
-            Explore
-          </a>
-          <a href="/" className="text-gray-600 hover:text-black">
-            Sell
-          </a>
-          <a
-            href="/"
-            className="text-gray-600 hover:text-black flex items-center"
-          >
-            Drops
-            <span className="ml-1 text-xs bg-gray-200 text-gray-500 rounded-full px-1 py-0.5">
-              NEW
-            </span>
-          </a>
-        </nav>
-        <button className="px-4 py-2 bg-green-500 text-white rounded-full">
-          MARKETPLACE
-        </button>
         <button
           id="connect-button"
           className="px-4 py-2 bg-primary text-white bg-blue-500 rounded"

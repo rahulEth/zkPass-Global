@@ -2,38 +2,37 @@ import React from "react";
 
 const SaveCredentialsPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {/* <header className="flex justify-between w-full p-4 bg-white shadow">
-        <div className="logo">Logo</div>
-        <button className="btn btn-primary">Connect</button>
-      </header> */}
-      <main className="flex flex-col items-center justify-center flex-1 p-4">
-        <div className="mb-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg max-w-6xl mx-auto">
+      {/* <h1 className="w-full p-4 bg-white shadow"> */}
+      {/* </h1> */}
+      <main className="flex flex-col items-center justify-start flex-1 mt-20 p-4">
+        <h1 className="logo text-[60px] font-bold">Save you Credentials</h1>
+        <div className="mb-4 mt-10 flex gap-2">
           <input
             type="text"
             placeholder="Enter the website URL you're looking for"
-            className="px-4 py-2 mb-2 border rounded"
+            className="px-4 py-2 mb2 border rounded"
           />
           <input
             type="text"
             placeholder="Username"
-            className="px-4 py-2 mb-2 border rounded"
+            className="px-4 py-2 mb2 border rounded"
           />
           <input
             type="password"
             placeholder="Password"
-            className="px-4 py-2 mb-2 border rounded"
+            className="px-4 py-2 mb2 border rounded"
           />
-          <button className="px-4 py-2 text-white bg-green-500 rounded">
+          <button className="px-4 py- text-white bg-blue-500 rounded">
             Submit
           </button>
         </div>
-        <table className="table-auto bg-white shadow-lg">
+        <table className="table-auto bg-white shadow-lg w-full">
           <thead>
             <tr>
-              <th className="px-4 py-2 border">Website</th>
-              <th className="px-4 py-2 border">Username</th>
-              <th className="px-4 py-2 border">Password</th>
+              <th className="px-4 py-2 border text-left">Website</th>
+              <th className="px-4 py-2 border text-left">Username</th>
+              <th className="px-4 py-2 border text-left">Password</th>
             </tr>
           </thead>
           <tbody>

@@ -1,30 +1,33 @@
 import "./App.css";
-// import useEffect from "react";
-// import AnalogWatch from "./components/AnalogWatch";
-// import Todo from "./components/Todo";
-// import Accordian from "./components/Accordian";
+
 import LandingPage from "./components/landingpage/LandingPage";
 import SaveCredentialsPage from "./components/landingpage/SaveCredentialsPage";
 import GetCredentialsPage from "./components/landingpage/GetCredentialsPage";
 import Header from "./components/header/Header";
+import { BrowserRouter, Routes, Route, Switch } from "react-router-dom";
 
 function App() {
-  // useEffect(() => {
-  //   const res = fetch("https://v2.jokeapi.dev/joke/Programming").then(
-  //     (response) => {
-  //       return response.json();
-  //     }
-  //   );
-  // }, []);
   return (
     <>
       <div className="App">
-        {/* <AnalogWatch /> */}
-        {/* <Accordian />*/}
-        <Header />
-        <LandingPage />
-        <SaveCredentialsPage />
-        <GetCredentialsPage />
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route exact path="/" element={<LandingPage />} />
+            <Route
+              exact
+              path="/SaveCredentials"
+              element={<SaveCredentialsPage />}
+            />
+            <Route
+              exact
+              path="/GetCredentials"
+              element={<GetCredentialsPage />}
+            />
+            {/* <SaveCredentialsPage />
+            <GetCredentialsPage /> */}
+          </Routes>
+        </BrowserRouter>
       </div>
     </>
   );

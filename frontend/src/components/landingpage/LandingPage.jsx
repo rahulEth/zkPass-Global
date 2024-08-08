@@ -1,19 +1,28 @@
 import React from "react";
 
+import "./style.css";
+import { Link } from "react-router-dom";
+
 const LandingPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="hero-section flex flex-col items-center justify-center min-h-[85vh] ">
       <main className="flex flex-col items-center justify-center flex-1 p-4">
-        <h1 className="mb-8 text-2xl font-semibold text-center">
+        <h1 className="mb-8 text-[60px] text-[#000] font-bold text-center mx-auto max-w-4xl z-[999999] opacity-100 leading-[120%]">
           Save your Web2 Credentials in a trustless manner
         </h1>
         <div className="flex space-x-4">
-          <button className="px-4 py-2 text-white bg-blue-500 rounded">
+          <Link
+            to="/SaveCredentials"
+            className="px-4 py-2 text-white bg-blue-500 rounded"
+          >
             Save Credentials
-          </button>
-          <button className="px-4 py-2 text-white bg-blue-500 rounded">
+          </Link>
+          <Link
+            to="/GetCredentials"
+            className="px-4 py-2 text-white bg-blue-500 rounded"
+          >
             Get Credentials
-          </button>
+          </Link>
         </div>
       </main>
     </div>
