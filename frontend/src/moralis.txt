@@ -1,0 +1,10 @@
+import { Core } from '@moralisweb3/common-core';
+import {EvmApi} from '@moralisweb3/evm-api';
+
+const core = Core.create();
+const evmApi = EvmApi.create(core);
+core.registerModules([evmApi]);
+
+export const Moralis = {
+  EvmApi: evmApi,
+};

@@ -1,8 +1,10 @@
 import React from "react";
+import * as env from '../../envfile.js'
 
 const Header = () => {
   const connectWallet = async () => {
     console.log("wallet conntect......")
+    
     const chainId = await window.ethereum.request({method: "eth_chainId"})
     console.log("chainId---- ", chainId)
     function handleChainChanged(chainId) {
@@ -11,7 +13,7 @@ const Header = () => {
         params: [{ chainId: "0x14a34" }],
       })
       // We recommend reloading the page, unless you must do otherwise.
-      window.location.reload()
+      // window.location.reload()
     }
     if (window.ethereum) {
       try {
@@ -38,22 +40,6 @@ const Header = () => {
       alert("MetaMask is not installed");
     }
   };
-  window.addEventListener('load', async () => {
-    if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        if (accounts.length > 0) {
-            console.log('Reconnected:', accounts[0]);
-            localStorage.setItem('userAddress',accounts[0]);
-            // Update UI to reflect the connected state
-            document.getElementById("connect-button").textContent = accounts[0];
-        } else {
-            console.log('No accounts found');
-        }
-    } else {
-        console.error('MetaMask is not installed');
-    }
-});
-
 // Function to check if the wallet is already connected on page load
 async function checkIfWalletIsConnected() {
   const storedAddress = localStorage.getItem('userAddress');
@@ -73,7 +59,7 @@ async function checkIfWalletIsConnected() {
 }
 
 window.onload = async () => {
-  await checkIfWalletIsConnected();
+  // await checkIfWalletIsConnected();
   // handleMetaMaskEvents();
 };
   return (
