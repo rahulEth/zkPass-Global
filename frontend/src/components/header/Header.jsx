@@ -1,17 +1,17 @@
 import React from "react";
-import * as env from '../../envfile.js'
+// import * as env from "../../envfile.js";
 
 const Header = () => {
   const connectWallet = async () => {
-    console.log("wallet conntect......")
-    
-    const chainId = await window.ethereum.request({method: "eth_chainId"})
-    console.log("chainId---- ", chainId)
+    console.log("wallet conntect......");
+
+    const chainId = await window.ethereum.request({ method: "eth_chainId" });
+    console.log("chainId---- ", chainId);
     function handleChainChanged(chainId) {
       window.provider.request({
         method: "wallet_switchEthereumChain",
         params: [{ chainId: "0x14a34" }],
-      })
+      });
       // We recommend reloading the page, unless you must do otherwise.
       // window.location.reload()
     }
@@ -40,28 +40,30 @@ const Header = () => {
       alert("MetaMask is not installed");
     }
   };
-// Function to check if the wallet is already connected on page load
-async function checkIfWalletIsConnected() {
-  const storedAddress = localStorage.getItem('userAddress');
-  if (storedAddress) {
+  // Function to check if the wallet is already connected on page load
+  async function checkIfWalletIsConnected() {
+    const storedAddress = localStorage.getItem("userAddress");
+    if (storedAddress) {
       // Check if the wallet is still connected
-      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
       if (accounts.length > 0 && accounts[0] === storedAddress) {
-          console.log('Auto-reconnected:', storedAddress);
-          // Update your UI or state here to reflect the reconnection
+        console.log("Auto-reconnected:", storedAddress);
+        // Update your UI or state here to reflect the reconnection
       } else {
-          console.log('Stored address does not match any connected account');
-          localStorage.removeItem('userAddress'); // Clear storage if not connected
+        console.log("Stored address does not match any connected account");
+        localStorage.removeItem("userAddress"); // Clear storage if not connected
       }
-  } else {
-      console.log('No wallet connected previously');
+    } else {
+      console.log("No wallet connected previously");
+    }
   }
-}
 
-window.onload = async () => {
-  // await checkIfWalletIsConnected();
-  // handleMetaMaskEvents();
-};
+  window.onload = async () => {
+    // await checkIfWalletIsConnected();
+    // handleMetaMaskEvents();
+  };
   return (
     <header className="flex items-center justify-between px-4 py-2 bg-white shadow">
       <div className="flex items-center space-x-4">

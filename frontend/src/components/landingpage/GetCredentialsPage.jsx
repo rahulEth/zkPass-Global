@@ -4,13 +4,8 @@ const GetCredentialsPage = () => {
   const handlClick = (e) => {};
   return (
     <div className="flex flex-col items-center justify-center min-h-screen   max-w-6xl mx-auto">
-      {/* <header className="flex justify-between w-full p-4 bg-white shadow">
-        <div className="logo">Logo</div>
-        <button className="btn btn-primary">Connect</button>
-      </header> */}
       <main className="flex flex-col items-center justify-start mt-20 flex-1 p-4 max-w-3xl mx-auto w-full">
         <h1 className="logo text-[60px] font-bold">Get you Credentials</h1>
-
         <div className="flex w-full gap-3 mt-10">
           <input
             type="text"
