@@ -1,8 +1,29 @@
 import React from "react";
 
-const SaveCredentialsPage = () => {
+const SaveCredentialsPage = async () => {
   const handlClick = (e) => {};
-
+  const connectWallet = async ()=>{
+    if(window.ethereum){
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      if (accounts.length > 0) {
+          // Already connected
+          console.log('Already connected:', accounts[0]);
+          // Update your UI or state to reflect the connected account
+      }else{
+          // Not connected, so prompt user to connect
+          try {
+              const newAccounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+              console.log('Connected:', newAccounts[0]);
+              // Update your UI or state to reflect the newly connected account
+          } catch (error) {
+              console.error('User denied account access', error);
+          }
+      }
+    } else{
+      console.error('MetaMask is not installed');
+    }
+  }
+  connectWallet() 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg max-w-6xl mx-auto">
       {/* <h1 className="w-full p-4 bg-white shadow"> */}
