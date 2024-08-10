@@ -1,6 +1,29 @@
-const saveCred = async (e) => {
-    const resp = await uploadToIpfs("user1", "password1", "app1");
-    console.log("resp------ ", resp);
+document.getElementById('submitButton').addEventListener('click', function(event){
+  event.preventDefault(); 
+  saveCred()
+});
+const saveCred = async () => {
+    // Send POST request using Axios
+      // Request account access if needed
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        
+      // The public key (Ethereum address) is the first account
+      const publicKey = accounts[0];
+      const user = document.getElementById("user").textContent;
+      const password = document.getElementById("password").textContent;
+      console.log({publicKey, user, password})
+    const data = {
+      publicKey, user:'user1', password:'password1'
+    }
+    axios.post('http://localhost:3000/api/saveCred', data)
+        .then(response => {
+            console.log('Response:', response.data);
+            alert('credentials saved successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending data.');
+        });
   };
   //   async function uploadToIpfs(user, password, app){
 

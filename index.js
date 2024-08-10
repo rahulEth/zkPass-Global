@@ -1,12 +1,91 @@
 
 const fs = require('fs');
 const dotenv = require('dotenv');
-const { Provider, Wallet, types } = require('zksync-ethers');
+const Moralis = require("moralis").default;
+// const { Provider, Wallet, types } = require('zksync-ethers');
 dotenv.config()
 const {connectToDatabase} = require('./db.js');
-// Example proving and verification keys for zkSNARK (replace with actual keys)
-const provingKey = fs.readFileSync('circuit_final.zkey');
-const verificationKey = JSON.parse(fs.readFileSync('verification_key.json'));
+const cors = require('cors');
+const crypto = require('crypto');
+
+
+// index.js
+
+const express = require('express');
+const app = express();
+
+// Use CORS middleware
+app.use(cors({origin: 'http://127.0.0.1:5500'}));
+
+// Middleware to parse JSON bodies
+app.use(express.json());
+// Set the port number to listen on
+const PORT = process.env.PORT || 3000;
+
+// Define a simple route
+app.post('/api/saveCred', (req, res) => {
+    const publicKey = req.body.publicKey;
+    // Encrypt the message with the public key
+    console.log("req.body.publicKey ", req.body.publicKey)
+    const key = publicKeyToAesKey(publicKey);
+    const iv = crypto.randomBytes(16); // Initialization vector
+    const cipherUser = crypto.createCipheriv('aes-256-cbc', key, iv);
+    const cipherPassword = crypto.createCipheriv('aes-256-cbc', key, iv)
+    let encrypted = cipherUser.update(req.body.user, 'utf8', 'hex');
+    let encrypted1 = cipherPassword.update(req.body.password, 'utf8', 'hex');
+
+    encrypted += cipherUser.final('hex');
+    encrypted1 += cipherPassword.final('hex');
+    const encryptedUser = iv.toString('hex') + ':' + encrypted;
+    const encryptedPassword = iv.toString('hex') + ':' + encrypted1;
+    uploadToIpfs(publicKey, encryptedUser, encryptedPassword)
+    return {publicKey, encryptedUser, encryptedPassword}
+});
+
+
+  async function uploadToIpfs(publicKey, encryptedUser, encryptedPassword){
+    const fileUploads = [
+        {
+            path: "zk-pass",
+            content: {publicKey, encryptedUser, encryptedPassword, app :  'https://amazon.in'}
+        }
+      ]
+    await Moralis.start({
+        apiKey: process.env.MORALIS_KEY
+    })
+    const res = await Moralis.EvmApi.ipfs.uploadFolder({
+        abi: fileUploads
+    })
+    console.log(res.result)
+    storeToDB(publicKey, res.result)
+
+}
+async function storeToDB(publicKey, ipfsHash){
+    const db = await connectToDatabase();
+    const collection = db.collection('zkpass-credentials');
+    const result = await collection.insertOne({publicKey, ipfsHash})
+    console.log('document inserted Id ', result.insertedId.toString())
+}
+
+// Function to convert a public key to an AES encryption key
+function publicKeyToAesKey(publicKey) {
+    // Use the first 32 bytes of the public key hash as the AES key
+    const key = crypto.createHash('sha256').update(publicKey).digest().slice(0, 32);
+    return key;
+}
+
+
+app.get('/getCred', (req, res) => {
+
+    res.send('Hello, World!');
+});
+
+
+// Start the server and listen on the specified port
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
 
 
 // User registration
@@ -94,9 +173,9 @@ async function storePublicKey(publicKey, dataHash) {
   }
 
 // Example usage
-(async () => {
-    // Register a new user
-    await registerUser();
-})();
+// (async () => {
+//     // Register a new user
+//     await registerUser();
+// })();
 
 

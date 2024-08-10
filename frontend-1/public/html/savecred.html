@@ -37,22 +37,26 @@
         <div class="mb-4 mt-10 flex gap-2">
           <input
             type="text"
+            id="appUrl"
             placeholder="Enter the website URL you're looking for"
             class="px-4 py-2 mb2 border rounded"
           />
           <input
             type="text"
-            placeholder="Username"
+            id="user"
+            placeholder="user"
             class="px-4 py-2 mb2 border rounded"
           />
           <input
             type="password"
+            id="password"
             placeholder="Password"
             class="px-4 py-2 mb2 border rounded"
           />
           <button
-            onClick="saveCred()"
+            id="submitButton"
             class="px-4 py- text-white bg-blue-500 rounded"
+            onClick="saveCred()"
           >
             Submit
           </button>
@@ -75,8 +79,33 @@
         </table>
       </main>
     </div>
-    <script src="../js/header.js"> </script>
-    <script src="../js/saveCred.js"> </script>
-
+    <script>
+      const saveCred = async () => {
+    // Send POST request using Axios
+      // Request account access if needed
+      // const accounts = await window.<ethereum.request({ method: 'eth_accounts' });
+        
+      // The public key (Ethereum address) is the first account
+      const publicKey = localStorage.getItem("userAddress");
+      const user = document.getElementById("user").textContent;
+      const password = document.getElementById("password").textContent;
+      console.log({publicKey, user, password})
+    const data = {
+      publicKey, user:'user1', password:'password1'
+    }
+    axios.post('http://localhost:3000/api/saveCred', data)
+        .then(response => {
+            console.log('Response:', response.data);
+            alert('credentials saved successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending data.');
+        });
+  };
+    </script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"> </script>
   </body>
+  <script type="text/javascript" src="../js/header.js"> </script>
+  <!-- <script type="text/javascript" src="../js/saveCred.js"> </script>       -->
 </html>
