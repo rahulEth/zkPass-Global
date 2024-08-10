@@ -69,12 +69,7 @@
               <th class="px-4 py-2 border text-left">Password</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2 border">https://amazon.in</td>
-              <td class="px-4 py-2 border">myname@gmail.com</td>
-              <td class="px-4 py-2 border">VFR#1234</td>
-            </tr>
+          <tbody id ="table-body">
           </tbody>
         </table>
       </main>
@@ -86,26 +81,35 @@
       // const accounts = await window.<ethereum.request({ method: 'eth_accounts' });
         
       // The public key (Ethereum address) is the first account
-      const publicKey = localStorage.getItem("userAddress");
+      const publicKey = localStorage.getItem("userPublickey");
+      console.log("publicKey------ ", publicKey)
       const user = document.getElementById("user").textContent;
       const password = document.getElementById("password").textContent;
       console.log({publicKey, user, password})
     const data = {
-      publicKey, user:'user1', password:'password1'
+      publicKey, user:'user1', password:'password1', appLink:'amazon.in'
     }
     axios.post('http://localhost:3000/api/saveCred', data)
         .then(response => {
-            console.log('Response:', response.data);
+            console.log('Response:', response.data, typeof response.data);
+            const tableBody = $('#table-body');
+            const row = $('<tr></tr>');
+            row.append(`<td>${response.data.appLink}</td>`);
+            row.append(`<td>${response.data.encryptedUser}</td>`);
+            row.append(`<td>${response.data.encryptedPassword}</td>`);
+
+            tableBody.append(row);
             alert('credentials saved successfully!');
         })
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred while sending data.');
         });
-  };
+    };
     </script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </body>
   <script type="text/javascript" src="../js/header.js"> </script>
-  <!-- <script type="text/javascript" src="../js/saveCred.js"> </script>       -->
+  <script type="text/javascript" src="../js/saveCred.js"> </script>      
 </html>

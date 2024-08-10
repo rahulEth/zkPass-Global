@@ -1,5 +1,6 @@
+// const { ethers } = require("ethers");
+
 const connectWallet = async () => {
-    console.log("wallet conntect......");
 
     const chainId = await window.ethereum.request({ method: "eth_chainId" });
     console.log("chainId---- ", chainId);
@@ -18,9 +19,17 @@ const connectWallet = async () => {
         });
         const account = accounts[0];
         console.log(account);
-
+        const signature = await window.ethereum.request({
+          method: 'personal_sign',
+          params: ['please give your approval', account],
+        });
+        // Recover the public key from the signature
+        const msgHash = ethers.utils.hashMessage('please give your approval');
+        const recoveredPublicKey = ethers.utils.recoverPublicKey(msgHash, signature);
+        console.log("recoveredPublicKey ", recoveredPublicKey)
         document.getElementById("connect-button").textContent = account;
         localStorage.setItem("userAddress", account)
+        localStorage.setItem("userPublickey", recoveredPublicKey)
 
         const result = await window.ethereum.request({
           method: "eth_getBalance",
@@ -53,12 +62,12 @@ const connectWallet = async () => {
                 // Update your UI or state here to reflect the reconnection
               } else {
                 console.log("Stored address does not match any connected account");
-                localStorage.removeItem("userAddress"); // Clear storage if not connected
+                // localStorage.removeItem("userAddress"); // Clear storage if not connected
               }
     }
   }
 
   window.onload = async () => {
-    await checkIfWalletIsConnected();
+    // await checkIfWalletIsConnected();
     // handleMetaMaskEvents();
   };

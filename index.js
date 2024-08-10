@@ -25,29 +25,36 @@ const PORT = process.env.PORT || 3000;
 // Define a simple route
 app.post('/api/saveCred', (req, res) => {
     const publicKey = req.body.publicKey;
+    const appLink = req.body.appLink;
     // Encrypt the message with the public key
     console.log("req.body.publicKey ", req.body.publicKey)
     const key = publicKeyToAesKey(publicKey);
     const iv = crypto.randomBytes(16); // Initialization vector
     const cipherUser = crypto.createCipheriv('aes-256-cbc', key, iv);
-    const cipherPassword = crypto.createCipheriv('aes-256-cbc', key, iv)
+    const cipherPassword = crypto.createCipheriv('aes-256-cbc', key, iv);
+    const cipherApplink = crypto.createCipheriv('aes-256-cbc', key, iv);
     let encrypted = cipherUser.update(req.body.user, 'utf8', 'hex');
     let encrypted1 = cipherPassword.update(req.body.password, 'utf8', 'hex');
+    let encrypted2 = cipherApplink.update(req.body.appLink, 'utf8', 'hex');
 
     encrypted += cipherUser.final('hex');
     encrypted1 += cipherPassword.final('hex');
+    encrypted2 += cipherApplink.final('hex');
+
     const encryptedUser = iv.toString('hex') + ':' + encrypted;
     const encryptedPassword = iv.toString('hex') + ':' + encrypted1;
-    uploadToIpfs(publicKey, encryptedUser, encryptedPassword)
-    return {publicKey, encryptedUser, encryptedPassword}
+    const encryptedappLink = iv.toString('hex') + ':' + encrypted2;
+    uploadToIpfs(publicKey, encryptedUser, encryptedPassword, encryptedappLink, req.body.appLink)
+    return res.status(200).send({publicKey, encryptedUser, encryptedPassword, appLink})
+
 });
 
 
-  async function uploadToIpfs(publicKey, encryptedUser, encryptedPassword){
+  async function uploadToIpfs(publicKey, encryptedUser, encryptedPassword, encryptedappLink, appLink){
     const fileUploads = [
         {
             path: "zk-pass",
-            content: {publicKey, encryptedUser, encryptedPassword, app :  'https://amazon.in'}
+            content: {publicKey, encryptedUser, encryptedPassword, encryptedappLink}
         }
       ]
     await Moralis.start({
@@ -57,13 +64,12 @@ app.post('/api/saveCred', (req, res) => {
         abi: fileUploads
     })
     console.log(res.result)
-    storeToDB(publicKey, res.result)
-
+    storeToDB(publicKey, res.result, appLink)
 }
-async function storeToDB(publicKey, ipfsHash){
+async function storeToDB(publicKey, ipfsHash, appLink){
     const db = await connectToDatabase();
     const collection = db.collection('zkpass-credentials');
-    const result = await collection.insertOne({publicKey, ipfsHash})
+    const result = await collection.insertOne({publicKey, ipfsHash, appLink})
     console.log('document inserted Id ', result.insertedId.toString())
 }
 
@@ -75,7 +81,7 @@ function publicKeyToAesKey(publicKey) {
 }
 
 
-app.get('/getCred', (req, res) => {
+app.get('/api/getCred', (req, res) => {
 
     res.send('Hello, World!');
 });
