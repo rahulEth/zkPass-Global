@@ -4,6 +4,9 @@ const dotenv = require('dotenv');
 const { Provider, Wallet, types } = require('zksync-ethers');
 dotenv.config()
 const {connectToDatabase} = require('./db.js');
+// Example proving and verification keys for zkSNARK (replace with actual keys)
+const provingKey = fs.readFileSync('circuit_final.zkey');
+const verificationKey = JSON.parse(fs.readFileSync('verification_key.json'));
 
 
 // User registration
@@ -95,4 +98,5 @@ async function storePublicKey(publicKey, dataHash) {
     // Register a new user
     await registerUser();
 })();
+
 
