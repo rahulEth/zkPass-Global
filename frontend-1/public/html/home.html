@@ -22,7 +22,7 @@
         <button
           id="connect-button"
           class="px-4 py-2 bg-primary text-white bg-blue-500 rounded"
-          onClick="{connectWallet}"
+          onClick="connectWallet()"
         >
           Connect wallet
         </button>
@@ -40,13 +40,13 @@
         </h1>
         <div class="flex space-x-4">
           <a
-            href="/SaveCredentials"
+            href="savecred.html"
             class="px-4 py-2 text-white bg-blue-500 rounded"
           >
             Save Credentials
           </a>
           <a
-            to="/GetCredentials"
+            href="getcred.html"
             class="px-4 py-2 text-white bg-blue-500 rounded"
           >
             Get Credentials
@@ -54,5 +54,8 @@
         </div>
       </main>
     </div>
+    <script src="../js/header.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
   </body>
+
 </html>
