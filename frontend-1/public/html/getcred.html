@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <header class="flex items-center justify-between px-4 py-2 bg-white shadow">
+      <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2">
+          <img
+            src="https://via.placeholder.com/32x32.png?text=R"
+            alt="Logo"
+            class="h-8 w-8"
+          />
+          <span class="font-bold text-lg">Logo</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button
+          id="connect-button"
+          class="px-4 py-2 bg-primary text-white bg-blue-500 rounded"
+          onClick="{connectWallet}"
+        >
+          Connect wallet
+        </button>
+      </div>
+    </header>
+    <div
+      class="flex flex-col items-center justify-center min-h-screen max-w-6xl mx-auto"
+    >
+      <main
+        class="flex flex-col items-center justify-start mt-20 flex-1 p-4 max-w-3xl mx-auto w-full"
+      >
+        <h1 class="logo text-[60px] font-bold">Get you Credentials</h1>
+        <div class="flex w-full gap-3 mt-10">
+          <input
+            type="text"
+            placeholder="Enter the website name you are looking for "
+            class="px-4 py-2 mb-4 border rounded w-full"
+          />
+          <button
+            onClick="{handlClick}"
+            class="px-4 py-2 mb-4 text-white bg-blue-500 rounded"
+          >
+            Submit
+          </button>
+        </div>
+        <table class="table-auto bg-white shadow-lg w-full">
+          <thead>
+            <tr>
+              <th class="px-4 py-2 border text-left">Website</th>
+              <th class="px-4 py-2 border text-left">Username</th>
+              <th class="px-4 py-2 border text-left">Password</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="px-4 py-2 border">https://amazon.in</td>
+              <td class="px-4 py-2 border">myname@gmail.com</td>
+              <td class="px-4 py-2 border">VFR#1234</td>
+            </tr>
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </body>
+</html>

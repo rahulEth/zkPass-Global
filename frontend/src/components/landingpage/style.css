@@ -1,0 +1,14 @@
+.hero-section::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-image: url('./bgh.webp');
+  /* background-color: rgba(162, 26, 26, 0.851); */
+  z-index: -11;
+  display: block;
+  position: absolute;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.8;
+  background-blend-mode: difference;
+}
