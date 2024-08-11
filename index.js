@@ -7,13 +7,14 @@ dotenv.config()
 const {connectToDatabase} = require('./db.js');
 const cors = require('cors');
 const crypto = require('crypto');
+const axios = require('axios');
 
 
 // index.js
 
 const express = require('express');
 const app = express();
-
+const CryptoJS = require('crypto-js')
 // Use CORS middleware
 app.use(cors({origin: 'http://127.0.0.1:5500'}));
 
@@ -27,24 +28,31 @@ app.post('/api/saveCred', (req, res) => {
     const publicKey = req.body.publicKey;
     const appLink = req.body.appLink;
     // Encrypt the message with the public key
-    console.log("req.body.publicKey ", req.body.publicKey)
-    const key = publicKeyToAesKey(publicKey);
-    const iv = crypto.randomBytes(16); // Initialization vector
-    const cipherUser = crypto.createCipheriv('aes-256-cbc', key, iv);
-    const cipherPassword = crypto.createCipheriv('aes-256-cbc', key, iv);
-    const cipherApplink = crypto.createCipheriv('aes-256-cbc', key, iv);
-    let encrypted = cipherUser.update(req.body.user, 'utf8', 'hex');
-    let encrypted1 = cipherPassword.update(req.body.password, 'utf8', 'hex');
-    let encrypted2 = cipherApplink.update(req.body.appLink, 'utf8', 'hex');
+    console.log("req.body.publicKey ", req.body.publicKey, req.body.signature)
+    // const key = publicKeyToAesKey(publicKey);
+    // const iv = crypto.randomBytes(16); // Initialization vector
+    // const cipherUser = crypto.createCipheriv('aes-256-cbc', key, iv);
+    // const cipherPassword = crypto.createCipheriv('aes-256-cbc', key, iv);
+    // const cipherApplink = crypto.createCipheriv('aes-256-cbc', key, iv);
+    // let encrypted = cipherUser.update(req.body.user, 'utf8', 'hex');
+    // let encrypted1 = cipherPassword.update(req.body.password, 'utf8', 'hex');
+    // let encrypted2 = cipherApplink.update(req.body.appLink, 'utf8', 'hex');
 
-    encrypted += cipherUser.final('hex');
-    encrypted1 += cipherPassword.final('hex');
-    encrypted2 += cipherApplink.final('hex');
+    // encrypted += cipherUser.final('hex');
+    // encrypted1 += cipherPassword.final('hex');
+    // encrypted2 += cipherApplink.final('hex');
 
-    const encryptedUser = iv.toString('hex') + ':' + encrypted;
-    const encryptedPassword = iv.toString('hex') + ':' + encrypted1;
-    const encryptedappLink = iv.toString('hex') + ':' + encrypted2;
-    uploadToIpfs(publicKey, encryptedUser, encryptedPassword, encryptedappLink, req.body.appLink)
+    // const encryptedUser = iv.toString('hex') + ':' + encrypted;
+    // const encryptedPassword = iv.toString('hex') + ':' + encrypted1;
+    // const encryptedappLink = iv.toString('hex') + ':' + encrypted2;
+
+
+    // Encrypt
+    var encryptedUser = CryptoJS.AES.encrypt(req.body.user, req.body.signature).toString();
+    var encryptedPassword = CryptoJS.AES.encrypt(req.body.password, req.body.signature).toString();
+    var encryptedApplink = CryptoJS.AES.encrypt(req.body.appLink, req.body.signature).toString();
+
+    uploadToIpfs(publicKey, encryptedUser, encryptedPassword, encryptedApplink, req.body.appLink)
     return res.status(200).send({publicKey, encryptedUser, encryptedPassword, appLink})
 
 });
@@ -81,9 +89,35 @@ function publicKeyToAesKey(publicKey) {
 }
 
 
-app.get('/api/getCred', (req, res) => {
+app.get('/api/getCred',async  (req, res) => {
+    console.log('req.param:/...... ', req.query.appLink)
+    const db = await connectToDatabase();
+    const collection = db.collection('zkpass-credentials');
+    try{
+        const result = await collection.findOne({appLink: req.query.appLink})
+        console.log("result======= ", result, result.ipfsHash[0].path)
+        if(result){
+            axios.get(result.ipfsHash[0].path)
+            .then(response => {
+                // Decrypt
+                var bytes1  = CryptoJS.AES.decrypt(response.data.encryptedUser, req.query.signature);
+                var bytes2  = CryptoJS.AES.decrypt(response.data.encryptedPassword,req.query.signature);
+                var user = bytes1.toString(CryptoJS.enc.Utf8);
+                var password = bytes2.toString(CryptoJS.enc.Utf8);
 
-    res.send('Hello, World!');
+              console.log('Data:', response.data);
+              res.status(200).send({user, password, appLink: req.query.appLink})
+            })
+            .catch(error => {
+              console.error('Error fetching data:', error);
+            });
+        }else{
+            res.status(500).send('credentials not found')
+        }
+
+    }catch(err){
+        console.log('getCred ', err)
+    }
 });
 
 

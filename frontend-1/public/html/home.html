@@ -56,19 +56,20 @@
     </div>
     <script src="../js/header.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-    <script src="./ethers.js" type="module"></script>   
+    <script src="./ethers.js" type="module"></script> 
+
+    <!-- <script src="./crypto.js"></script> -->
+
     <script>
     </script>
     </script>
     <script type="module"> 
       import { ethers } from "./ethers.js";
+      // import * as cryptoJs  from "./crypto.js"
       window.ethers = ethers;
+      // window.cryptoJs = cryptoJs;
+
     </script>
-    <!-- <script type="module">
-      import { ethers } from 'https://cdn.ethers.io/lib/ethers-5.2.esm.min.js';
-  
-      // Your code here
-  </script> -->
   </body>
 
 </html>

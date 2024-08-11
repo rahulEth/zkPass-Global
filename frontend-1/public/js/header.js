@@ -30,7 +30,6 @@ const connectWallet = async () => {
         document.getElementById("connect-button").textContent = account;
         localStorage.setItem("userAddress", account)
         localStorage.setItem("userPublickey", recoveredPublicKey)
-
         const result = await window.ethereum.request({
           method: "eth_getBalance",
           params: [account, "latest"],
@@ -70,4 +69,53 @@ const connectWallet = async () => {
   window.onload = async () => {
     // await checkIfWalletIsConnected();
     // handleMetaMaskEvents();
+    // const encoder = new TextEncoder();
+    // const decoder = new TextDecoder();
+    // setTimeout(async ()=>{
+    //   const accounts = await window.ethereum.request({
+    //     method: "eth_requestAccounts",
+    //   });
+    //   const account = accounts[0];
+      // const publicKeyBuffer = encoder.encode(localStorage.getItem('userPublickey').slice(2), 'hex'); // Remove '0x' and convert to buffer
+      // const encryptedMessage = await crypto.encrypt(publicKeyBuffer, encoder.encode('please encrypt me'));
+  
+      // // Convert the encrypted message to a format that can be sent to MetaMask
+      // const encryptedMessageString = JSON.stringify({
+      //     version: "x25519-xsalsa20-poly1305",
+      //     ephemPublicKey: encryptedMessage.ephemPublicKey.toString('base64'),
+      //     nonce: encryptedMessage.nonce.toString('base64'),
+      //     ciphertext: encryptedMessage.ciphertext.toString('base64'),
+      // });
+      // console.log("encryptedMessageString ", encryptedMessageString)
+
+      // const message = 'encrypt it'
+      // const encryptedData = crypto.publicEncrypt(
+      //   {
+      //       key: localStorage.getItem('userPublickey'),
+      //       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+      //       oaepHash: "sha256",
+      //   },
+      //   Buffer.from(message)
+      // );
+      // console.log("encryptedData== ", encryptedData)
+
+      // const provider = new window.ethers.providers.Web3Provider(window.ethereum);
+      // const decryptedMessage = await window.ethereum.request({
+      //   method: 'eth_decrypt',
+      //   params: [encrypted, account],
+      // });
+  
+      // console.log("Decrypted Message:", decryptedMessage);
+
+
+    //   var ciphertext = cryptoJs.AES.encrypt('my message', 'secret key 123').toString();
+
+    //   // Decrypt
+    //   var bytes  = cryptoJs.AES.decrypt(ciphertext, 'secret key 123');
+    //   var originalText = bytes.toString(cryptoJs.enc.Utf8);
+
+    //   console.log('originalText ===== ',originalText); // 'my message'
+
+    
+    // }, 10000)
   };

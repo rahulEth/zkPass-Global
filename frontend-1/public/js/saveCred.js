@@ -5,15 +5,20 @@ document.getElementById('submitButton').addEventListener('click', function(event
 const saveCred = async () => {
     // Send POST request using Axios
       // Request account access if needed
-      // const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
         
       // The public key (Ethereum address) is the first account
       const publicKey = localStorage.getItem("userPublickey")
       const user = document.getElementById("user").textContent;
       const password = document.getElementById("password").textContent;
       console.log({publicKey, user, password})
+      const signature = await window.ethereum.request({
+        method: 'personal_sign',
+        params: ['amazon.in', accounts[0]],
+      });
+      console.log("signature===== ", signature)
       const data = {
-        publicKey, user:'user1', password:'password1'
+        publicKey, user:'user1', password:'password1', signature, appLink: 'amazon.in'
       }
       axios.post('http://localhost:3000/api/saveCred', data)
         .then(response => {

@@ -37,12 +37,13 @@
         <h1 class="logo text-[60px] font-bold">Get you Credentials</h1>
         <div class="flex w-full gap-3 mt-10">
           <input
+            id="appLink"
             type="text"
             placeholder="Enter the website name you are looking for "
             class="px-4 py-2 mb-4 border rounded w-full"
           />
           <button
-            onClick="{handlClick}"
+            onClick="getCred()"
             class="px-4 py-2 mb-4 text-white bg-blue-500 rounded"
           >
             Submit
@@ -56,15 +57,46 @@
               <th class="px-4 py-2 border text-left">Password</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td class="px-4 py-2 border">https://amazon.in</td>
-              <td class="px-4 py-2 border">myname@gmail.com</td>
-              <td class="px-4 py-2 border">VFR#1234</td>
-            </tr>
+          <tbody id="table-body">
           </tbody>
         </table>
       </main>
     </div>
   </body>
+  <script>
+    const getCred = async () => {
+    const appLink = document.getElementById("appLink").textContent;
+    console.log({appLink})
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    
+    const signature = await window.ethereum.request({
+      method: 'personal_sign',
+      params: ['amazon.in', accounts[0]],
+    });
+    console.log("signature===== ", signature)
+    const params = {
+      appLink:'amazon.in',
+      signature
+    }
+  axios.get('http://localhost:3000/api/getCred', {params})
+      .then(async response => {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          console.log('Response:', response.data, typeof response.data);
+          const tableBody = $('#table-body');
+          const row = $('<tr></tr>');
+          row.append(`<td>${response.data.appLink}</td>`);
+          row.append(`<td>${response.data.user}</td>`);
+          row.append(`<td>${response.data.password}</td>`);
+
+          tableBody.append(row);
+          alert('get credentials successfully');
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred while sending data.');
+      });
+  };
+  </script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"> </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  
 </html>
