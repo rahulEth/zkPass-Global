@@ -10,5 +10,11 @@
     "encryptedUser": "U2FsdGVkX19Tdau0bvkuVX3fd0zZyIljji3CpC+JK6A=",
     "encryptedPassword": "U2FsdGVkX19VuNXqRpkwAlQv2MPX7cBOz5KdxNCktVQ=",
     "appLink": "ethglobal108.com"
+  },
+  {
+    "publicKey": "0x0400de22d795617aace992e4b42c7ab18c83b2961535e2e39dff1b1fb656a28d77ecd32cf89e30cdecfa3a543d8ae83bef46d1d884dacf30dc798c2169ff0e6c94",
+    "encryptedUser": "U2FsdGVkX1+ocOrrkC83tf6mVFiobeuFQX1TXxjfVZE=",
+    "encryptedPassword": "U2FsdGVkX1+rdJNMmRQHKLk1copR2TzOUUlonlV6mCM=",
+    "appLink": "ethglobal109.com"
   }
 ]

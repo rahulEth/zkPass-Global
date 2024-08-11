@@ -117,7 +117,7 @@ app.get('/api/getCred',async  (req, res) => {
     const collection = db.collection('zkpass-credentials');
     try{
         const result = await collection.findOne({appLink: req.query.appLink})
-        console.log("result======= ", result, result.ipfsHash[0].path)
+        console.log("result======= ", result)
         if(result){
             axios.get(result.ipfsHash[0].path)
             .then(response => {

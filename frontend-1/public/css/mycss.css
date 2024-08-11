@@ -1,0 +1,25 @@
+tbody tr {
+    border: 2px solid; /* Adjust color and width as needed */
+    border-collapse: collapse; 
+  }
+
+/* Use different border styles */
+table td {
+    border: 2px dashed; /* Dashed border style */
+  }
+  
+  table th {
+    border: 2px solid ; /* Solid border style */
+    background-color: #e1e8ed; /* Light background for headers */
+  }
+  
+  /* Add rounded corners to cells */
+  table td, table th {
+    border-radius: 4px; /* Rounded corners */
+  }
+  
+  /* Optional: add shadows for a 3D effect */
+  table {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  }
+  
