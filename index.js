@@ -53,6 +53,24 @@ app.post('/api/saveCred', (req, res) => {
     var encryptedApplink = CryptoJS.AES.encrypt(req.body.appLink, req.body.signature).toString();
 
     uploadToIpfs(publicKey, encryptedUser, encryptedPassword, encryptedApplink, req.body.appLink)
+    const newData = {publicKey, encryptedUser, encryptedPassword, appLink};
+
+
+    // Read the existing data from the file
+    fs.readFile('./saveCred.json', 'utf8', (err, data) => {
+        if (err && err.code !== 'ENOENT') throw err;
+
+        const jsonArray = data ? JSON.parse(data) : [];
+        console.log('jsonA----- ', jsonArray)
+        // Append the new data
+        jsonArray.push(newData);
+
+        // Write the updated array back to the file
+        fs.writeFile('./saveCred.json', JSON.stringify(jsonArray, null, 2), (err) => {
+            if (err) throw err;
+            console.log('Data appended to file');
+        });
+    });
     return res.status(200).send({publicKey, encryptedUser, encryptedPassword, appLink})
 
 });
@@ -65,9 +83,13 @@ app.post('/api/saveCred', (req, res) => {
             content: {publicKey, encryptedUser, encryptedPassword, encryptedappLink}
         }
       ]
-    await Moralis.start({
-        apiKey: process.env.MORALIS_KEY
-    })
+    if(!Moralis.Core.isStarted){
+        await Moralis.start({
+            apiKey: process.env.MORALIS_KEY
+        })
+    } else{
+        console.log('Moralis is already started!')
+    } 
     const res = await Moralis.EvmApi.ipfs.uploadFolder({
         abi: fileUploads
     })
@@ -120,6 +142,18 @@ app.get('/api/getCred',async  (req, res) => {
     }
 });
 
+app.get('/api/getEncryptedCred',async  (req, res) => {
+
+    // Read the existing data from the file
+    let jsonArray =[]
+    fs.readFile('./saveCred.json', 'utf8', (err, data) => {
+        if (err && err.code !== 'ENOENT') throw err;
+        
+        jsonArray = data ? JSON.parse(data) : [];
+        return res.status(200).send(jsonArray)
+    });
+
+});
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {

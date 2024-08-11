@@ -119,3 +119,30 @@ const connectWallet = async () => {
     
     // }, 10000)
   };
+
+  window.onload = ()=>{
+    const $tableBody = $('#table-body'); 
+    axios.get('http://localhost:3000/api/getEncryptedCred')
+    .then((response) => {
+      console.log("response:..... ", response)
+      if(response.status == 200){
+      return response
+      }
+    })
+    .then(response => {
+        // You can now manipulate the data as needed
+        const data = JSON.parse(JSON.stringify(response.data));
+        for(let i =0; i< data.length; i++){
+          
+          // Create a new table row element
+          const $row = $('<tr></tr>');
+          $row.append(`<td>${data[i].appLink}</td>`);
+          $row.append(`<td>${data[i].encryptedUser}</td>`);
+          $row.append(`<td>${data[i].encryptedPassword}</td>`);
+          
+          // Append the row to the table body
+          $tableBody.append($row);
+        }
+    })
+    .catch(error => console.error('Error fetching data:', error));
+  };

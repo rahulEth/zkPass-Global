@@ -37,21 +37,24 @@
         <div class="mb-4 mt-10 flex gap-2">
           <input
             type="text"
-            id="appUrl"
+            id="appLink"
             placeholder="Enter the website URL you're looking for"
             class="px-4 py-2 mb2 border rounded"
+            style="width: 200px; text-overflow: ellipsis;"
           />
           <input
             type="text"
             id="user"
             placeholder="user"
             class="px-4 py-2 mb2 border rounded"
+            style="width: 200px; text-overflow: ellipsis;"
           />
           <input
             type="password"
             id="password"
             placeholder="Password"
             class="px-4 py-2 mb2 border rounded"
+            style="width: 200px; text-overflow: ellipsis;"
           />
           <button
             id="submitButton"
@@ -76,27 +79,28 @@
     </div>
     <script>
       const saveCred = async () => {
-    // Send POST request using Axios
-      // Request account access if needed
-      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+        // Send POST request using Axios
+        // Request account access if needed
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' });
         
-      // The public key (Ethereum address) is the first account
-      const publicKey = localStorage.getItem("userPublickey");
-      console.log("publicKey------ ", publicKey)
-      const user = document.getElementById("user").textContent;
-      const password = document.getElementById("password").textContent;
+        // The public key (Ethereum address) is the first account
+        const publicKey = localStorage.getItem("userPublickey");
+        console.log("publicKey------ ", publicKey)
+        const user = document.getElementById("user").value;
+        const password = document.getElementById("password").value;
+        const appLink = document.getElementById("appLink").value;
 
-      console.log({publicKey, user, password})
-      const signature = await window.ethereum.request({
-        method: 'personal_sign',
-        params: ['amazon.in', accounts[0]],
-      });
-      console.log("signature===== ", signature)
+        console.log({publicKey, user, password, appLink})
+        const signature = await window.ethereum.request({
+          method: 'personal_sign',
+          params: [appLink, accounts[0]],
+        });
+        console.log("signature===== ", signature)
 
-      const data = {
-        publicKey, user:'user1', password:'password1', appLink:'amazon.in', signature: signature
-      }
-    axios.post('http://localhost:3000/api/saveCred', data)
+        const data = {
+          publicKey, user, password, appLink, signature
+        }
+        axios.post('http://localhost:3000/api/saveCred', data)
         .then(response => {
             console.log('Response:', response.data, typeof response.data);
             const tableBody = $('#table-body');
@@ -106,16 +110,20 @@
             row.append(`<td>${response.data.encryptedPassword}</td>`);
 
             tableBody.append(row);
+            
+            // window.saveCred.push(response.data);
+            // console.log("savecredn:----- ", window.saveCred)
             alert('credentials saved successfully!');
         })
         .catch(error => {
             console.error('Error:', error);
             alert('An error occurred while sending data.');
         });
-    };
+      };
+    
     </script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"> </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   </body>
-  <script type="text/javascript" src="../js/header.js"> </script>     
+  <script type="text/javascript" src="../js/header.js"> </script>  
 </html>

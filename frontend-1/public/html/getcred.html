@@ -65,20 +65,20 @@
   </body>
   <script>
     const getCred = async () => {
-    const appLink = document.getElementById("appLink").textContent;
-    console.log({appLink})
-    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-    
-    const signature = await window.ethereum.request({
-      method: 'personal_sign',
-      params: ['amazon.in', accounts[0]],
-    });
-    console.log("signature===== ", signature)
-    const params = {
-      appLink:'amazon.in',
-      signature
-    }
-  axios.get('http://localhost:3000/api/getCred', {params})
+      const appLink = document.getElementById("appLink").value;
+      console.log({appLink})
+      const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+      
+      const signature = await window.ethereum.request({
+        method: 'personal_sign',
+        params: [appLink, accounts[0]],
+      });
+      console.log("signature===== ", signature)
+      const params = {
+        appLink: appLink,
+        signature
+      }
+      axios.get('http://localhost:3000/api/getCred', {params})
       .then(async response => {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
           console.log('Response:', response.data, typeof response.data);
@@ -89,13 +89,18 @@
           row.append(`<td>${response.data.password}</td>`);
 
           tableBody.append(row);
+          window.getCred = row;
           alert('get credentials successfully');
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          alert('An error occurred while sending data.');
-      });
-  };
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while sending data.');
+        });
+    };
+    window.onload = ()=>{
+        const tableBody = $('#table-body');
+        tableBody.append(window.getCred); 
+    }
   </script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.3/axios.min.js"> </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>  
